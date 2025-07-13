@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "myshows-mcp"
+version = "0.2.0"
+description = "An MCP server for the myshows.me API, structured for easy configuration."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Your Name", email = "you@example.com" }]
+dependencies = [
+    "langchain-mcp-adapters",
+    "httpx",
+    # tomli is used for parsing settings.toml on Python < 3.11
+    # On Python 3.11+ the standard library `tomllib` is used.
+    "tomli; python_version < '3.11'",
+]
+
+[tool.hatch.build.targets.wheel]
+# This tells the build system that our package 'myshows_mcp' is located
+# inside the 'src' directory. This is the standard way to configure
+# a 'src' layout with Hatch.
+packages = ["src/myshows_mcp"]

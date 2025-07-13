@@ -1,0 +1,33 @@
+# Configuration
+# Exclude the settings file containing sensitive credentials
+settings.toml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+develop-eggs/
+sdist/
+wheelhouse/
+*.tar.gz
+
+# IDE configuration
+.idea/
+.vscode/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
