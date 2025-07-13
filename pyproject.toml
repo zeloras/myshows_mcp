@@ -7,10 +7,13 @@ name = "myshows-mcp"
 version = "0.2.0"
 description = "An MCP server for the myshows.me API, structured for easy configuration."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "Your Name", email = "you@example.com" }]
-dependencies = ["langchain-mcp-adapters", "httpx"]
+authors = [{ name = "Vitalii", email = "you@example.com" }]
+dependencies = ["fastmcp", "httpx"]
+
+[project.scripts]
+myshows_mcp = "myshows_mcp.server:main"
 
 [tool.hatch.build.targets.wheel]
 # This tells the build system that our package 'myshows_mcp' is located

@@ -8,6 +8,21 @@ Configuration is handled via environment variables. You must set your `myshows.m
 
 This is a secure method that avoids storing your password in a file.
 
+## MCP configuration
+```json
+{
+  /// The name of your MCP server
+  "myshows": {
+    /// The command which runs the MCP server
+    "command": "uvx",
+    /// The arguments to pass to the MCP server
+    "args": ["--from","git+https://github.com/zeloras/myshows_mcp.git","myshows_mcp"],
+    /// The environment variables to set
+    "env": {"MYSHOWS_LOGIN":"login","MYSHOWS_PASSWORD":"pwd"}
+  }
+}
+```
+
 **On Linux or macOS:**
 ```bash
 export MYSHOWS_LOGIN="your_actual_login"
