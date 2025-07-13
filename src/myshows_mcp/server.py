@@ -1,56 +1,12 @@
+import os
 import functools
-from dataclasses import dataclass
-from pathlib import Path
 from typing import Any, Callable, Coroutine, Dict, Optional
-
-try:
-    # Use the standard library tomllib on Python 3.11+
-    import tomllib
-except ImportError:
-    # Fallback to the tomli package on older Python versions
-    import tomli as tomllib
 
 import httpx
 from mcp.server.fastmcp import FastMCP
 
 # The API endpoint for all requests
 API_URL = "https://api.myshows.me/v2/rpc/"
-
-
-# --- Configuration ---
-
-
-@dataclass
-class Settings:
-    """Holds the configuration for the MyShows API client."""
-
-    login: str
-    password: str
-
-
-def load_settings(path: Path = Path("settings.toml")) -> Optional[Settings]:
-    """Loads API credentials from a TOML file."""
-    if not path.is_file():
-        print(f"Error: Configuration file not found at '{path}'.")
-        print("Please create it based on the README.md instructions.")
-        return None
-    try:
-        with open(path, "rb") as f:
-            data = tomllib.load(f)
-
-        myshows_config = data.get("myshows", {})
-        login = myshows_config.get("login")
-        password = myshows_config.get("password")
-
-        if not login or not password or "your_login_here" in login:
-            print(f"Error: 'login' and 'password' are not configured in '{path}'.")
-            print("Please fill in your credentials.")
-            return None
-
-        return Settings(login=login, password=password)
-    except Exception as e:
-        print(f"Error parsing configuration file '{path}': {e}")
-        return None
 
 
 # --- API Client ---
@@ -63,9 +19,9 @@ class MyShowsAPI:
     session cookies for subsequent requests, managed automatically by httpx.
     """
 
-    def __init__(self, settings: Settings):
-        self._login = settings.login
-        self._password = settings.password
+    def __init__(self, login: str, password: str):
+        self._login = login
+        self._password = password
         self._client = httpx.AsyncClient(base_url=API_URL, timeout=30.0)
         self._login_attempted = False
 
@@ -140,7 +96,7 @@ class MyShowsAPI:
 # --- MCP Server Setup ---
 
 mcp = FastMCP("MyShows")
-# This global client is initialized in the main() function after loading settings.
+# This global client is initialized in the main() function after loading credentials.
 api_client: Optional[MyShowsAPI] = None
 
 
@@ -204,18 +160,20 @@ def main():
     global api_client
     print("--- MyShows MCP Server ---")
 
-    settings = load_settings()
+    login = os.environ.get("MYSHOWS_LOGIN")
+    password = os.environ.get("MYSHOWS_PASSWORD")
 
-    if settings:
-        print("Configuration loaded successfully.")
-        api_client = MyShowsAPI(settings)
+    if login and password:
+        print("Credentials loaded from environment variables.")
+        api_client = MyShowsAPI(login=login, password=password)
         print(
             "Available tools: get_profile, search_shows, get_my_shows, check_episode, uncheck_episode"
         )
         print("Server is ready to accept requests via stdio.")
         mcp.run(transport="stdio")
     else:
-        print("Could not start server due to configuration error. Exiting.")
+        print("Error: MYSHOWS_LOGIN and MYSHOWS_PASSWORD environment variables not set.")
+        print("Could not start server due to missing configuration. Exiting.")
 
 
 if __name__ == "__main__":

@@ -4,19 +4,23 @@ This project provides a Model Context Protocol (MCP) server for interacting with
 
 ## 1. Configuration
 
-Before running the server, you need to provide your `myshows.me` credentials.
+Configuration is handled via environment variables. You must set your `myshows.me` credentials before running the server.
 
-1.  Open the `settings.toml` file in the root of the project.
-2.  Replace `"your_login_here"` and `"your_password_here"` with your actual login and password.
+This is a secure method that avoids storing your password in a file.
 
-```toml
-# settings.toml
-[myshows]
-login = "your_actual_login"
-password = "your_secret_password"
+**On Linux or macOS:**
+```bash
+export MYSHOWS_LOGIN="your_actual_login"
+export MYSHOWS_PASSWORD="your_secret_password"
 ```
 
-**Note:** The `settings.toml` file is included in `.gitignore` to prevent you from accidentally committing your credentials.
+**On Windows (Command Prompt):**
+```cmd
+set MYSHOWS_LOGIN="your_actual_login"
+set MYSHOWS_PASSWORD="your_secret_password"
+```
+
+You need to set these variables in the same terminal session where you will run the server.
 
 ## 2. Installation
 
@@ -28,7 +32,7 @@ pip install .
 
 ## 3. Running the Server
 
-Once installed, you can run the MCP server using the following command:
+Once you have set the environment variables and installed the package, you can run the MCP server using the following command:
 
 ```bash
 python -m myshows_mcp.server

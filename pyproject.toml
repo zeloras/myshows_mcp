@@ -10,13 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [{ name = "Your Name", email = "you@example.com" }]
-dependencies = [
-    "langchain-mcp-adapters",
-    "httpx",
-    # tomli is used for parsing settings.toml on Python < 3.11
-    # On Python 3.11+ the standard library `tomllib` is used.
-    "tomli; python_version < '3.11'",
-]
+dependencies = ["langchain-mcp-adapters", "httpx"]
 
 [tool.hatch.build.targets.wheel]
 # This tells the build system that our package 'myshows_mcp' is located
