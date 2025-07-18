@@ -3,10 +3,12 @@ import functools
 from typing import Any, Callable, Coroutine
 from fastmcp import FastMCP
 from myshows_mcp.api.myshows_api import MyShowsAPI
+
 # --- MCP Server Setup ---
 
 mcp = FastMCP("MyShows MCP Server")
 api_client: MyShowsAPI = MyShowsAPI(login="", password="")
+
 
 def tool_handler(
     func: Callable[..., Coroutine[Any, Any, Any]]
@@ -16,9 +18,7 @@ def tool_handler(
     @functools.wraps(func)
     async def wrapper(*args: Any, **kwargs: Any):
         if not api_client:
-            return {
-                "error": "API client is not configured. Please check server logs."
-            }
+            return {"error": "API client is not configured. Please check server logs."}
         try:
             # The wrapped function will use the global api_client
             return await func(*args, **kwargs)
@@ -28,17 +28,17 @@ def tool_handler(
     return wrapper
 
 
-
 @mcp.tool()
 @tool_handler
-async def search_shows(query: str, year: int|None = None, page: int = 0):
+async def search_shows(query: str, year: int | None = None, page: int = 0):
     """Searches for TV shows/movies on MyShows by a query and optional year.
     :param query: The search query string.
     :param year: Optional year to filter the search results.
     :param page: The page number to retrieve (default is 0).
     :return: A dictionary containing the search results.
     """
-    return await api_client.search_shows(query=query,year=year, page=page)
+    return await api_client.search_shows(query=query, year=year, page=page)
+
 
 @mcp.tool()
 @tool_handler
@@ -69,6 +69,7 @@ async def get_viewed_episodes(myshows_item_id: int):
     """
     return await api_client.get_viewed_tv_episodes(myshows_item_id=myshows_item_id)
 
+
 @mcp.tool()
 @tool_handler
 async def check_episode(episode_id: int):
@@ -98,6 +99,7 @@ async def set_movie_watch_status(movie_id: int, status: str):
     """
     return await api_client.set_movie_watch_status(movie_id=movie_id, status=status)
 
+
 @mcp.tool()
 @tool_handler
 async def get_calendar_episodes():
@@ -116,6 +118,7 @@ async def get_myshows_recomendations(self):
     """
     return await api_client.get_myshows_recomendations()
 
+
 @mcp.tool()
 @tool_handler
 async def get_myshows_profile_shows_list():
@@ -123,6 +126,7 @@ async def get_myshows_profile_shows_list():
     :return: A dictionary containing the list of tv shows.
     """
     return await api_client.get_myshows_profile_shows_list()
+
 
 def main():
     """Server entry point."""
@@ -136,7 +140,9 @@ def main():
         mcp.run()
 
     else:
-        print("Error: MYSHOWS_LOGIN and MYSHOWS_PASSWORD environment variables not set.")
+        print(
+            "Error: MYSHOWS_LOGIN and MYSHOWS_PASSWORD environment variables not set."
+        )
         print("Could not start server due to missing configuration. Exiting.")
 
 
