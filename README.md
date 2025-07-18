@@ -60,7 +60,8 @@ The server will start and listen for requests on `stdio`.
 The server exposes the following tools:
 
 *   `get_profile()`: Retrieves your user profile information.
-*   `search_shows(query: str)`: Searches for TV shows by a given query.
+*   `search_shows(query: str, year: int = None, page: int = 0)`: Searches for TV shows by name and optional year.
 *   `get_my_shows()`: Fetches a list of all shows in your profile.
 *   `check_episode(episode_id: int)`: Marks an episode as watched.
 *   `uncheck_episode(episode_id: int)`: Unmarks an episode as watched.
+*   `set_movie_watch_status(movie_id: int, status: str)`: Sets the watch status of a movie.
