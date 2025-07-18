@@ -2,7 +2,7 @@ import os
 import functools
 from typing import Any, Callable, Coroutine
 from fastmcp import FastMCP
-from src.myshows_mcp.api.myshows_api import MyShowsAPI
+from myshows_mcp.api.myshows_api import MyShowsAPI
 # --- MCP Server Setup ---
 
 mcp = FastMCP("MyShows MCP Server")
