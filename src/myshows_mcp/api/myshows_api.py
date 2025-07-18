@@ -128,7 +128,7 @@ class MyShowsAPI:
         :param myshows_item_id: The MyShows ID of the show to retrieve.
         :return: A dictionary containing the show's details, including episodes and season counts.
         """
-        return self._make_request(method="shows.GetById", id=87, params={
+        return await self._make_request(method="shows.GetById", id=87, params={
             "showId": int(myshows_item_id),
             "withEpisodes": True,
             "withSeasonCounts": True
