@@ -98,6 +98,31 @@ async def set_movie_watch_status(movie_id: int, status: str):
     """
     return await api_client.set_movie_watch_status(movie_id=movie_id, status=status)
 
+@mcp.tool()
+@tool_handler
+async def get_calendar_episodes():
+    """Retrieves the calendar episodes from MyShows with information about the next episodes.
+    This method fetches the next episodes scheduled to air, including their details.
+    :return: A dictionary containing the calendar episodes.
+    """
+    return await api_client.get_calendar_episodes()
+
+
+@mcp.tool()
+@tool_handler
+async def get_myshows_recomendations(self):
+    """Retrieves recommendations from MyShows.
+    :return: A dictionary containing the recommendations.
+    """
+    return await api_client.get_myshows_recomendations()
+
+@mcp.tool()
+@tool_handler
+async def get_myshows_profile_shows_list():
+    """Retrieves the list of tv shows from the MyShows profile.
+    :return: A dictionary containing the list of tv shows.
+    """
+    return await api_client.get_myshows_profile_shows_list()
 
 def main():
     """Server entry point."""

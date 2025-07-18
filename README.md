@@ -32,3 +32,6 @@ The server exposes the following tools:
 *   `check_episode(episode_id: int)`: Marks an episode as watched by its MyShows ID.
 *   `uncheck_episode(episode_id: int)`: Marks an episode as unwatched
 *   `set_movie_watch_status(movie_id: int, status: str)`: Sets the watch status of a movie by its MyShows ID.
+*   `get_calendar_episodes()`: Retrieves a list of episodes scheduled for today.
+*   `get_myshows_recomendations()`: Retrieves a list of recommendations from MyShows.
+*   `get_myshows_profile_shows_list()`: Retrieves a list of shows from your MyShows profile.

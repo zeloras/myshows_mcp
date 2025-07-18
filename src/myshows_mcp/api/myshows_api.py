@@ -172,3 +172,36 @@ class MyShowsAPI:
         return await self._make_request(
             "manage.CheckEpisode", params={"id": int(episode_id)}, id=113
         )
+
+    async def get_calendar_episodes(self) -> Dict[str, Any]:
+        """Retrieves the calendar episodes from MyShows with information about the next episodes.
+        This method fetches the next episodes scheduled to air, including their details.
+        :return: A dictionary containing the calendar episodes.
+        """
+        return await self._make_request(
+            method="lists.Episodes",
+            id=86,
+            params={"list": "next"}
+        )
+
+    async def get_myshows_recomendations(self) -> Dict[str, Any]:
+        """Retrieves recommendations from MyShows.
+        :return: A dictionary containing the recommendations.
+        """
+        return await self._make_request(
+            method="recommendation.Get",
+            id=107,
+            params={"count": 10}
+        )
+
+    async def get_myshows_profile_shows_list(self) -> Dict[str, Any]:
+        """Retrieves the list of shows from MyShows profile.
+        :return: A dictionary containing the list of shows.
+        """
+        # The 'login' parameter is required but can be an empty string for the current user's profile.
+        # If you want to specify a different user's profile, replace the empty string with their login.
+        return await self._make_request(
+            method="profile.Shows",
+            id=5,
+            params={"login": ""}
+        )
