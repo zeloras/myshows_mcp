@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List, Union
 import httpx
 
 # The API endpoint for all requests
@@ -68,14 +68,27 @@ class MyShowsAPI:
             raise ConnectionError(f"Network error during login: {e}")
 
     async def _make_request(
-        self, method: str, id: int, params: Optional[Dict[str, Any]] = None
+        self, method: str, id: int, params: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None
     ) -> Dict[str, Any]:
-        """A generic method to make authenticated JSON-RPC requests."""
+        """A generic method to make authenticated JSON-RPC requests.
+        Supports both single requests and batch requests when params is a list."""
         await self._ensure_logged_in()
 
-        payload = [
-            {"jsonrpc": "2.0", "method": method, "params": params or {}, "id": int(id)}
-        ]
+        if isinstance(params, list):
+            # Batch request: create multiple JSON-RPC requests
+            payload = []
+            for i, param_dict in enumerate(params):
+                payload.append({
+                    "jsonrpc": "2.0",
+                    "method": method,
+                    "params": param_dict or {},
+                    "id": int(id) + i
+                })
+        else:
+            # Single request
+            payload = [
+                {"jsonrpc": "2.0", "method": method, "params": params or {}, "id": int(id)}
+            ]
 
         response = await self._client.post("/", json=payload)
         return {"result": response.json()}
@@ -162,22 +175,32 @@ class MyShowsAPI:
             "profile.Episodes", params={"showId": int(myshows_item_id)}, id=96
         )
 
-    async def uncheck_episode(self, episode_id: int) -> Dict[str, Any]:
+    async def uncheck_episode(self, episode_id: Union[int, List[int]]) -> Dict[str, Any]:
         """Unmarks an episode as watched by its ID.
-        :param episode_id: The ID of the episode to uncheck.
+        :param episode_id: The ID of the episode to uncheck, or a list of episode IDs for batch operation.
         :return: A dictionary containing the result of the uncheck operation.
         """
+        if isinstance(episode_id, list):
+            params = [{"id": int(ep_id)} for ep_id in episode_id]
+        else:
+            params = {"id": int(episode_id)}
+
         return await self._make_request(
-            "manage.UncheckEpisode", params={"id": int(episode_id)}, id=111
+            "manage.UncheckEpisode", params=params, id=111
         )
 
-    async def check_episode(self, episode_id: int) -> Dict[str, Any]:
+    async def check_episode(self, episode_id: Union[int, List[int]]) -> Dict[str, Any]:
         """Marks an episode as watched by its ID.
-        :param episode_id: The ID of the episode to check.
+        :param episode_id: The ID of the episode to check, or a list of episode IDs for batch operation.
         :return: A dictionary containing the result of the check operation.
         """
+        if isinstance(episode_id, list):
+            params = [{"id": int(ep_id)} for ep_id in episode_id]
+        else:
+            params = {"id": int(episode_id)}
+
         return await self._make_request(
-            "manage.CheckEpisode", params={"id": int(episode_id)}, id=113
+            "manage.CheckEpisode", params=params, id=113
         )
 
     async def get_calendar_episodes(self) -> Dict[str, Any]:

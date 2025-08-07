@@ -1,6 +1,6 @@
 import os
 import functools
-from typing import Any, Callable, Coroutine
+from typing import Any, Callable, Coroutine, Union, List
 from fastmcp import FastMCP
 from myshows_mcp.api.myshows_api import MyShowsAPI
 
@@ -72,15 +72,17 @@ async def get_viewed_episodes(myshows_item_id: int):
 
 @mcp.tool()
 @tool_handler
-async def check_episode(episode_id: int):
-    """Marks a specific episode as watched by its ID."""
+async def check_episode(episode_id: Union[int, List[int]]):
+    """Marks a specific episode as watched by its ID.
+    Supports both single episode ID and list of episode IDs for batch operations."""
     return await api_client.check_episode(episode_id=episode_id)
 
 
 @mcp.tool()
 @tool_handler
-async def uncheck_episode(episode_id: int):
-    """Unmarks a specific episode as watched by its ID."""
+async def uncheck_episode(episode_id: Union[int, List[int]]):
+    """Unmarks a specific episode as watched by its ID.
+    Supports both single episode ID and list of episode IDs for batch operations."""
     return await api_client.uncheck_episode(episode_id=episode_id)
 
 
