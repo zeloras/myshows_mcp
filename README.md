@@ -2,6 +2,10 @@
 
 This project provides a Model Context Protocol (MCP) server for interacting with the `myshows.me` API. It allows you to connect agents to your MyShows profile to manage and search for TV shows.
 
+<a href="https://glama.ai/mcp/servers/@zeloras/myshows_mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@zeloras/myshows_mcp/badge" alt="MyShows Server MCP server" />
+</a>
+
 ## Configuration
 
 Configuration is handled via environment variables. You must set your `myshows.me` credentials before running the server.
